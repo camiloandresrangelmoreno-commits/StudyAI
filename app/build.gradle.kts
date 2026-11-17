@@ -52,4 +52,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    // Íconos extendidos de Material Design 3
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    // Navegación entre pantallas en Jetpack Compose
+    implementation("androidx.navigation:navigation-compose:2.8.9")
+    // Guardado de datos local rápido y seguro (Gson para serializar el calendario y exámenes)
+    implementation("com.google.code.gson:gson:2.11.0")
 }
