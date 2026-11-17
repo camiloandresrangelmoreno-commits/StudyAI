@@ -207,7 +207,7 @@ fun PantallaInicio(
                         if (vencido) "🔒 Evaluación cerrada (${examen.fechaLimite} ${examen.horaLimiteSegura()})"
                         else "Total: ${StudyEngine.formatearMinutosAHoras(totalConDescanso)} • Cierra: ${examen.fechaLimite} ${examen.horaLimiteSegura()}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (vencido) Color(0xFFB71C1C) else IndigoPrimario
+                        color = if (vencido) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
@@ -278,7 +278,7 @@ fun PantallaInicio(
                             colors = CardDefaults.cardColors(
                                 containerColor = when {
                                     s.completada -> FondoVerdeSuave
-                                    vencido -> Color(0xFFEEEEEE)
+                                    vencido -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                                     else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                                 }
                             ),
@@ -303,7 +303,7 @@ fun PantallaInicio(
                                     )
                                 }
                                 if (vencido && !s.completada) {
-                                    Text("Cerrado", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFB71C1C))
+                                    Text("Cerrado", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error)
                                 } else {
                                     FilledTonalButton(
                                         onClick = {
@@ -533,7 +533,7 @@ fun PantallaInicio(
                                 Icons.Default.School,
                                 contentDescription = null,
                                 modifier = Modifier.size(48.dp),
-                                tint = IndigoPrimario
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
@@ -562,12 +562,12 @@ fun PantallaInicio(
                     Card(
                         shape = RoundedCornerShape(18.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (vencido) Color(0xFFF5F5F5) else MaterialTheme.colorScheme.surface
+                            containerColor = if (vencido) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f) else MaterialTheme.colorScheme.surface
                         ),
                         elevation = CardDefaults.cardElevation(defaultElevation = if (vencido) 0.dp else 3.dp),
                         border = BorderStroke(
                             1.dp,
-                            if (vencido) Color(0xFFBDBDBD) else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                            if (vencido) MaterialTheme.colorScheme.outlineVariant else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -584,12 +584,12 @@ fun PantallaInicio(
                                         examen.materia,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.ExtraBold,
-                                        color = if (vencido) Color(0xFF616161) else MaterialTheme.colorScheme.onSurface
+                                        color = if (vencido) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         "${sesionesExamen.size} bloques (${StudyEngine.formatearMinutosAHoras(minutosTotales)}) • Toca para gestionar",
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = if (vencido) Color(0xFF757575) else IndigoPrimario,
+                                        color = if (vencido) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
@@ -624,8 +624,8 @@ fun PantallaInicio(
                                     fontWeight = FontWeight.ExtraBold,
                                     color = when {
                                         porcentaje == 100 -> VerdeAprobado
-                                        vencido -> Color(0xFF757575)
-                                        else -> IndigoPrimario
+                                        vencido -> MaterialTheme.colorScheme.onSurfaceVariant
+                                        else -> MaterialTheme.colorScheme.primary
                                     },
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 )
@@ -633,7 +633,7 @@ fun PantallaInicio(
                             Spacer(modifier = Modifier.height(6.dp))
                             LinearProgressIndicator(
                                 progress = { porcentaje / 100f },
-                                color = if (porcentaje == 100) VerdeAprobado else if (vencido) Color(0xFF9E9E9E) else IndigoPrimario,
+                                color = if (porcentaje == 100) VerdeAprobado else if (vencido) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp)
@@ -758,7 +758,7 @@ fun PantallaNuevoExamen(
                             modifier = Modifier.padding(14.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = IndigoPrimario)
+                            Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 fechaSeleccionada.format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale("es", "ES"))),
@@ -787,13 +787,15 @@ fun PantallaNuevoExamen(
                             modifier = Modifier.padding(14.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.Schedule, contentDescription = null, tint = IndigoPrimario)
+                            Icon(Icons.Default.Schedule, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 horaSeleccionada.format(DateTimeFormatter.ofPattern("HH:mm")),
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 14.sp,
-                                color = IndigoPrimario
+                                color = MaterialTheme.colorScheme.primary,
+                                maxLines = 1,
+                                softWrap = false
                             )
                         }
                     }
@@ -821,13 +823,22 @@ fun PantallaNuevoExamen(
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Horas libres al día (estudio + descanso)", fontWeight = FontWeight.SemiBold)
                     Text(
-                        "${String.format(Locale.getDefault(), "%.1f", horasDia)} h/día",
+                        text = "Horas libres al día (estudio + descanso)",
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 12.dp)
+                    )
+                    Text(
+                        text = "${String.format(Locale.getDefault(), "%.1f", horasDia)} h/día",
                         fontWeight = FontWeight.ExtraBold,
-                        color = IndigoPrimario
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
                 Slider(
@@ -867,9 +878,9 @@ fun PantallaNuevoExamen(
                         .fillMaxWidth()
                         .height(54.dp)
                 ) {
-                    Icon(Icons.Default.AutoAwesome, contentDescription = null)
+                    Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Generar Cronograma Exacto", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("Generar Cronograma Exacto", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
         }
@@ -922,7 +933,7 @@ fun PantallaCalendario(
                             Text(
                                 "Tiempo hoy: ${StudyEngine.formatearMinutosAHoras(minutosTotalesDia)}",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = IndigoPrimario,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.SemiBold
                             )
                         }
@@ -1005,7 +1016,7 @@ fun PantallaCalendario(
                                         modifier = Modifier
                                             .size(6.dp)
                                             .clip(CircleShape)
-                                            .background(if (esSeleccionado) Color.White else IndigoPrimario)
+                                            .background(if (esSeleccionado) Color.White else MaterialTheme.colorScheme.primary)
                                     )
                                 }
                                 if (esDiaEntrega) {
@@ -1095,7 +1106,7 @@ fun PantallaCalendario(
                             colors = CardDefaults.cardColors(
                                 containerColor = when {
                                     sesion.completada -> FondoVerdeSuave
-                                    sesionVencida -> Color(0xFFF5F5F5)
+                                    sesionVencida -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
                                     else -> MaterialTheme.colorScheme.surface
                                 }
                             ),
@@ -1103,7 +1114,7 @@ fun PantallaCalendario(
                                 1.dp,
                                 when {
                                     sesion.completada -> VerdeAprobado.copy(alpha = 0.4f)
-                                    sesionVencida -> Color(0xFFBDBDBD)
+                                    sesionVencida -> MaterialTheme.colorScheme.outlineVariant
                                     else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                                 }
                             ),
@@ -1131,8 +1142,8 @@ fun PantallaCalendario(
                                             Spacer(modifier = Modifier.width(4.dp))
                                             Text("Validada", color = VerdeAprobado, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                         }
-                                        sesionVencida -> Text("🔒 Vencida", color = Color(0xFFB71C1C), fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                                        else -> Text("Pendiente", color = IndigoPrimario, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                        sesionVencida -> Text("🔒 Vencida", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                        else -> Text("Pendiente", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
@@ -1140,7 +1151,7 @@ fun PantallaCalendario(
                                     sesion.tituloSesion,
                                     fontWeight = FontWeight.ExtraBold,
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = if (sesion.completada) Color(0xFF1B5E20) else if (sesionVencida) Color(0xFF616161) else MaterialTheme.colorScheme.onSurface
+                                    color = if (sesion.completada) Color(0xFF1B5E20) else if (sesionVencida) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
@@ -1165,6 +1176,7 @@ fun PantallaCalendario(
                                         Icon(
                                             if (sesionVencida) Icons.Default.Lock else Icons.Default.PlayArrow,
                                             contentDescription = null,
+                                            tint = Color.White,
                                             modifier = Modifier.size(18.dp)
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -1173,7 +1185,8 @@ fun PantallaCalendario(
                                                 sesionVencida -> "Parcial Finalizado"
                                                 sesion.completada -> "Repasar (Tiempo Libre)"
                                                 else -> "Iniciar Sesión"
-                                            }
+                                            },
+                                            color = Color.White
                                         )
                                     }
                                     if (!sesionVencida) {
@@ -1254,7 +1267,7 @@ fun PantallaPomodoro(
             },
             title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Quiz, contentDescription = null, tint = IndigoPrimario)
+                    Icon(Icons.Default.Quiz, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Evaluación: ${sesionActiva.temaEspecifico}", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 }
@@ -1357,7 +1370,7 @@ fun PantallaPomodoro(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = VerdeAprobado)
                     ) {
-                        Text("Continuar y Guardar", fontWeight = FontWeight.Bold)
+                        Text("Continuar y Guardar", fontWeight = FontWeight.Bold, color = Color.White)
                     }
                 } else {
                     Button(
@@ -1374,7 +1387,7 @@ fun PantallaPomodoro(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = IndigoPrimario)
                     ) {
-                        Text("Calificar Respuestas")
+                        Text("Calificar Respuestas", color = Color.White)
                     }
                 }
             },
@@ -1411,7 +1424,7 @@ fun PantallaPomodoro(
                             if (sesionActiva == null) "Concentración independiente sin tareas"
                             else "${sesionActiva.materia} • ${sesionActiva.temaEspecifico}",
                             style = MaterialTheme.typography.labelSmall,
-                            color = IndigoPrimario
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 },
@@ -1479,7 +1492,7 @@ fun PantallaPomodoro(
                 val colorActivo = when {
                     esModoDescanso -> CianAcento
                     mitadTiempoCumplida -> VerdeAprobado
-                    else -> IndigoPrimario
+                    else -> MaterialTheme.colorScheme.primary
                 }
                 val colorPista = colorActivo.copy(alpha = 0.15f)
 
@@ -1542,12 +1555,13 @@ fun PantallaPomodoro(
                         .weight(1f)
                         .height(54.dp)
                 ) {
-                    Icon(if (enMarcha) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null)
+                    Icon(if (enMarcha) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         if (enMarcha) "Pausar" else if (esModoDescanso) "Iniciar Descanso" else "Iniciar Estudio",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
                 }
                 OutlinedButton(
